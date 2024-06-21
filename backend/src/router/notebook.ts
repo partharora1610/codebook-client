@@ -1,11 +1,10 @@
 import express, { Request, Response, NextFunction } from "express"
-import multer from "multer"
-import path from "path"
 import fs from "fs"
 import prisma from "../db"
+import upload from "../utils/multer"
 const router = express.Router()
 
-router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
+router.get("/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params
 
@@ -25,7 +24,7 @@ router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
   }
 })
 
-router.get("/", async (req: Request, res: Response, next: NextFunction) => {
+router.get("/", async (req: Request, res: Response) => {
   try {
     const notebooks = await prisma.resource.findMany()
 
@@ -35,19 +34,8 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   }
 })
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadsDir = path.join(__dirname, "../uploads")
-    fs.mkdirSync(uploadsDir, { recursive: true })
-    cb(null, uploadsDir)
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`)
-  },
-})
-
-const upload = multer({ storage })
-
+// This route will be hit by our cli application
+// This has to be auth protected
 router.post(
   "/",
   upload.single("file"),
@@ -77,6 +65,10 @@ router.post(
 
       await fs.promises.unlink(filePath)
 
+      if (!notebook) {
+        return res.status(500).send("Error creating notebook")
+      }
+
       res.status(201).send("Notebook created")
     } catch (error) {
       res.status(500).send("Error processing the request")
@@ -84,10 +76,12 @@ router.post(
   }
 )
 
-// Error handling middleware
-router.use((error: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error(error)
-  res.status(500).send("Error processing the request")
+// This also has to be auth protected
+router.post("/:id/duplicate", (req: Request, res: Response) => {
+  try {
+  } catch (error) {
+    res.status(500).send("Error processing the request")
+  }
 })
 
 export default router
