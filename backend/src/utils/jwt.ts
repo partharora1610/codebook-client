@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken"
 
 interface JWTPayload {
-  username: string
+  userId: string
 }
 
 class JWT {

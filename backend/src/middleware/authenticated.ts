@@ -16,13 +16,13 @@ export const Authenticated = async (
 
     const payload = jwtInstance.verify(token)
 
-    if (!payload || !payload.username) {
+    if (!payload || !payload.userId) {
       throw new Error("Unauthorized")
     }
 
     const user = await prisma.user.findUnique({
       where: {
-        username: payload.username,
+        id: payload.userId,
       },
     })
 
