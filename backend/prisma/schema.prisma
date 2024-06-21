@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User { 
+  id         String   @id @default(cuid())
+  email      String   @unique
+  username  String   @unique
+  password   String
+}
+
+model Resource {
+  id         String   @id @default(cuid())
+  title      String
+  content    Json
+  interactions Interaction[]
+  accessType AccessType @default(PUBLIC)
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Interaction {
+  id         String   @id @default(cuid())
+  resource   Resource @relation(fields: [resourceId], references: [id])
+  resourceId String  
+  type       String
+  createdAt  DateTime @default(now())
+}
+
+enum AccessType {
+  PUBLIC
+  ONLY_ME
+  ANYONE_WITH_LINK
+}
