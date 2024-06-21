@@ -1,5 +1,6 @@
 "use client"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import Link from "next/link"
 
 export default function Home() {
   return (
@@ -16,7 +17,9 @@ const NotebookContainer = () => {
   return (
     <div className="flex flex-col gap-8">
       {Array.from({ length: 8 }).map((_, i) => (
-        <Notebook key={i} />
+        <Link key={i} href={`/notebook/${i}`}>
+          <Notebook key={i} />
+        </Link>
       ))}
     </div>
   )

@@ -18,8 +18,8 @@ app.get("/health", (req: Request, res: Response) => {
   res.status(200).send("Server is running")
 })
 
-app.use("/api/auth", authRouter)
-app.use("/api/notebook", notebookRouter)
+app.use("/auth", authRouter)
+app.use("/notebook", notebookRouter)
 
 // Starting server
 app.listen(port, () => {

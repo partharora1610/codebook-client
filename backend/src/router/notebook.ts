@@ -34,8 +34,6 @@ router.get("/", async (req: Request, res: Response) => {
   }
 })
 
-// This route will be hit by our cli application
-// This has to be auth protected
 router.post(
   "/",
   upload.single("file"),
@@ -54,15 +52,24 @@ router.post(
 
       if (req.file.mimetype === "application/javascript") {
         fileData = fileBuffer.toString()
+      } else {
+        throw new Error("Invalid file type")
       }
 
       const notebook = await prisma.resource.create({
         data: {
           title,
           content: fileData,
+          accessType: "PUBLIC", // default
+          user: {
+            connect: {
+              id: req.userId,
+            },
+          },
         },
       })
 
+      // Deleting the file from the server after processing
       await fs.promises.unlink(filePath)
 
       if (!notebook) {
@@ -76,7 +83,6 @@ router.post(
   }
 )
 
-// This also has to be auth protected
 router.post("/:id/duplicate", (req: Request, res: Response) => {
   try {
   } catch (error) {

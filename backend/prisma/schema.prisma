@@ -9,8 +9,14 @@ datasource db {
 
 model User { 
   id         String   @id @default(cuid())
+  email      String   @unique
   username  String    @unique
   password   String
+  
+
+  resources  Resource[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
 }
 
 model Resource {
@@ -19,6 +25,8 @@ model Resource {
   content    Json
   interactions Interaction[]
   accessType AccessType @default(PUBLIC)
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
 
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt

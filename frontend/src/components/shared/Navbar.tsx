@@ -1,4 +1,5 @@
 import React from "react"
+import { MoonIcon } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 const Navbar = () => {
@@ -9,7 +10,10 @@ const Navbar = () => {
           <h1 className="text-lg font-semibold">codeBook</h1>
           <div>gloablSearchbar</div>
         </div>
-        <div>
+        <div className="flex items-center gap-8">
+          <div className="cursor-pointer">
+            <MoonIcon size={28} />
+          </div>
           <Avatar>
             <AvatarImage src="https://github.com/shadcn.png" />
             <AvatarFallback>CN</AvatarFallback>
