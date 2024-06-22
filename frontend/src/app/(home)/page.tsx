@@ -17,15 +17,13 @@ const NotebookContainer = () => {
   return (
     <div className="flex flex-col gap-8">
       {Array.from({ length: 8 }).map((_, i) => (
-        <Link key={i} href={`/notebook/${i}`}>
-          <Notebook key={i} />
-        </Link>
+        <Notebook key={i} index={i} />
       ))}
     </div>
   )
 }
 
-const Notebook = () => {
+const Notebook = ({ index }: { index: number }) => {
   return (
     <div className="border-b-2 pb-8 border-gray-100 px-2 py-3 rounded-sm">
       <div className="flex gap-3 items-center mb-2">
@@ -36,16 +34,17 @@ const Notebook = () => {
         <p>username</p>
       </div>
 
-      <div>
-        <h1 className="text-xl mb-1 font-semibold">
-          How to setup a monorepo project using NextJS, NestJS, Turborepo and
-          pnpm
-        </h1>
-        <p className="text-gray-500 mb-2">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente,
-          amet.
-        </p>
-      </div>
+      <Link key={index} href={`/notebook/${index}`}>
+        <div>
+          <h1 className="text-xl mb-1 font-semibold">
+            Understanding useEffect and useState in React
+          </h1>
+          <p className="text-gray-500 mb-2">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente,
+            amet.
+          </p>
+        </div>
+      </Link>
 
       <div>
         <div className="flex gap-2">

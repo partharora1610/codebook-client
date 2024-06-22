@@ -54,6 +54,9 @@ const LoginComponent = () => {
           <CardDescription>
             Enter your credentials to access your account.
           </CardDescription>
+          <Link href="/auth?mode=signup" prefetch={false}>
+            Signup
+          </Link>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid gap-2">

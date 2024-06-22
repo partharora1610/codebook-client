@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from "express"
 import fs from "fs"
 import prisma from "../db"
 import upload from "../utils/multer"
+import { Authenticated } from "../middleware/authenticated"
 const router = express.Router()
 
 router.get("/:id", async (req: Request, res: Response) => {
@@ -36,6 +37,7 @@ router.get("/", async (req: Request, res: Response) => {
 
 router.post(
   "/",
+  Authenticated,
   upload.single("file"),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -60,7 +62,7 @@ router.post(
         data: {
           title,
           content: fileData,
-          accessType: "PUBLIC", // default
+          accessType: "PUBLIC",
           user: {
             connect: {
               id: req.userId,
