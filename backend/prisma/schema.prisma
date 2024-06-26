@@ -8,36 +8,74 @@ datasource db {
 }
 
 model User { 
-  id         String   @id @default(cuid())
-  email      String   @unique
-  username  String    @unique
+  id         String     @id @default(cuid())
+  email      String     @unique
+  username   String     @unique
   password   String
-  
 
+  bookmarks  Resource[] @relation("BookmarkRelation")
   resources  Resource[]
+  comments    Comment[]
+  thumbsUp    ThumbsUp[]
+  following  Follows[]  @relation("FollowingRelation")
+  followers  Follows[]  @relation("FollowerRelation")
+
+
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
 }
 
 model Resource {
+  id          String       @id @default(cuid())
+  title       String
+  content     Json
+  accessType  AccessType   @default(PUBLIC)
+  userId      String
+  user        User         @relation(fields: [userId], references: [id])
+  bookmarks   User[]       @relation("BookmarkRelation")
+  comments    Comment[]
+  thumbsUp    ThumbsUp[]
+
+
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+
+
+model Comment {
   id         String   @id @default(cuid())
-  title      String
-  content    Json
-  interactions Interaction[]
-  accessType AccessType @default(PUBLIC)
+  content    String
   userId     String
+  resourceId String
   user       User     @relation(fields: [userId], references: [id])
+  resource   Resource @relation(fields: [resourceId], references: [id])
 
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }
 
-model Interaction {
+model ThumbsUp {
   id         String   @id @default(cuid())
+  userId     String
+  resourceId String
+  user       User     @relation(fields: [userId], references: [id])
   resource   Resource @relation(fields: [resourceId], references: [id])
-  resourceId String  
-  type       String
+
   createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
+}
+
+
+model Follows {
+  id         String   @id @default(cuid())
+  followerId String
+  followingId String
+  follower   User     @relation("FollowerRelation", fields: [followerId], references: [id])
+  following  User     @relation("FollowingRelation", fields: [followingId], references: [id])
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
 }
 
 enum AccessType {

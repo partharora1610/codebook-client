@@ -4,6 +4,7 @@ import { Poppins } from "next/font/google"
 import "./globals.css"
 import Navbar from "@/components/shared/Navbar"
 import AuthProvider from "@/providers/AuthProvider"
+import { ReactQueryClientProvider } from "@/providers/ReactQueryClientProvider"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -23,13 +24,15 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className={poppins.className}>
-        <AuthProvider>
-          <Navbar />
-          {children}
-        </AuthProvider>
-      </body>
-    </html>
+    <ReactQueryClientProvider>
+      <html lang="en">
+        <body className={poppins.className}>
+          <AuthProvider>
+            <Navbar />
+            {children}
+          </AuthProvider>
+        </body>
+      </html>
+    </ReactQueryClientProvider>
   )
 }

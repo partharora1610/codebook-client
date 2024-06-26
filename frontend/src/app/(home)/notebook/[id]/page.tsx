@@ -3,13 +3,20 @@
 import CellContainer from "@/components/code/CellContainer"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
-import { HandMetal, MessageCircle, BookCopy, Bookmark } from "lucide-react"
-
+import useNotebookStore from "@/store/notebook-store"
+import { HandMetal, MessageCircle, BookCopy, Bookmark, Dot } from "lucide-react"
 import { useParams } from "next/navigation"
-import React from "react"
+import React, { useEffect } from "react"
 
 const NoteBookPage = () => {
-  const { id } = useParams()
+  const params = useParams()
+  const id = params.id as string
+
+  const { fetchNotebook, notebook } = useNotebookStore()
+
+  useEffect(() => {
+    fetchNotebook(id)
+  }, [])
 
   return (
     <div>
@@ -21,13 +28,12 @@ const NoteBookPage = () => {
 }
 
 const HeaderComponent = () => {
+  const { notebook } = useNotebookStore()
+
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-3xl mb-1 font-semibold">
-          How to setup a monorepo project using NextJS, NestJS, Turborepo and
-          pnpm
-        </h1>
+        <h1 className="text-3xl mb-1 font-semibold">{notebook?.title}</h1>
       </div>
 
       <div>
@@ -39,13 +45,22 @@ const HeaderComponent = () => {
           <div>
             <div className="flex gap-2 items-center">
               <p>username</p>
-              <Button variant="link" size="sm">
+              <Button variant="link" size="sm" className="text-primary-700">
                 Follow
               </Button>
             </div>
-            <div className="flex gap-2 items-center">
-              <p className="text-gray-500">expected time</p>
-              <p className="text-gray-500">date</p>
+            <div className="flex items-center">
+              <div className="flex gap-1 items-center">
+                {/* <Star className="text-yellow-600" width={18} height={18} /> */}
+                <p className="text-gray-500">8 mins</p>
+              </div>
+
+              <div>
+                <Dot className="text-gray-500" />
+              </div>
+              <div className="text-gray-500">
+                <p>23rd July</p>
+              </div>
             </div>
           </div>
         </div>

@@ -39,8 +39,6 @@ const LoginComponent = () => {
       }
     )
 
-    // console.log({ token: response.data.token })
-
     if (response.status === 200) {
       storageManager.setItem("token", response.data.token)
     }
@@ -87,7 +85,10 @@ const LoginComponent = () => {
           </div>
         </CardContent>
         <CardFooter>
-          <Button onClick={onSubmit} className="w-full">
+          <Button
+            onClick={onSubmit}
+            className="w-full bg-primary-700 hover:bg-primary-800 transition-all"
+          >
             Sign in
           </Button>
         </CardFooter>
@@ -169,7 +170,10 @@ const SignupComponent = () => {
           </div>
         </CardContent>
         <CardFooter>
-          <Button onClick={onSubmit} className="w-full">
+          <Button
+            onClick={onSubmit}
+            className="w-full bg-primary-700 hover:bg-primary-800 transition-all"
+          >
             Sign Up
           </Button>
         </CardFooter>

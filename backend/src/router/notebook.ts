@@ -6,6 +6,7 @@ import { Authenticated } from "../middleware/authenticated"
 const router = express.Router()
 
 router.get("/:id", async (req: Request, res: Response) => {
+  console.log("Notebook")
   try {
     const { id } = req.params
 
@@ -19,17 +20,19 @@ router.get("/:id", async (req: Request, res: Response) => {
       return res.status(404).send("Notebook not found")
     }
 
-    res.status(200).json(notebook)
+    res.status(200).send(notebook)
   } catch (error) {
     res.status(500).send("Error processing the request")
   }
 })
 
+// GET /notebook
 router.get("/", async (req: Request, res: Response) => {
   try {
+    console.log("Notebooks")
     const notebooks = await prisma.resource.findMany()
 
-    res.status(200).json(notebooks)
+    res.status(200).send(notebooks)
   } catch (error) {
     res.status(500).send("Error processing the request")
   }

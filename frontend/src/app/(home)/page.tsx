@@ -1,72 +1,126 @@
 "use client"
+
+import { useEffect, useState } from "react"
+import axios from "axios"
+import Notebook from "@/components/shared/cards/Notebook"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import Link from "next/link"
+import { Button } from "@/components/ui/button"
 
 export default function Home() {
   return (
     <div className="m-auto max-w-7xl grid grid-cols-3 gap-4 mt-12">
-      <div className="col-span-2">
+      <div className="col-span-2 pr-8">
         <NotebookContainer />
       </div>
-      <div className="bg-gray-300"></div>
+      <div className="pl-8 py-8 pr-4 border-l-2 border-gray-100 flex flex-col gap-10">
+        <WhoFollowComponent />
+        <RecentlySavedComponent />
+      </div>
+    </div>
+  )
+}
+
+const WhoFollowComponent = () => {
+  return (
+    <div className="">
+      <h3 className="text-lg font-semibold mb-3">Who Follow</h3>
+      <div className="flex flex-col gap-6">
+        {Array.from({ length: 4 }).map((_, index) => (
+          <div key={index} className="flex items-center gap-4">
+            <Avatar className="w-7 h-7">
+              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+            <div className="flex items-center justify-between w-full">
+              <div>
+                <p className="">Shadcn</p>
+                <p className="text-sm text-gray-500">Lorem, ipsum dolor.</p>
+              </div>
+              <Button size="sm" variant="outline" className="rounded-full">
+                Follow
+              </Button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+const RecentlySavedComponent = () => {
+  return (
+    <div className="">
+      <h3 className="text-lg font-semibold mb-4">Recently Saved Sheets</h3>
+      <div className="flex flex-col gap-6">
+        {Array.from({ length: 4 }).map((_, index) => (
+          <div
+            key={index}
+            className="items-center hover:bg-gray-50 px-2 py-2 rounded-sm cursor-pointer transition-all"
+          >
+            <div className="flex gap-2 items-center mb-3">
+              <Avatar className="w-5 h-5">
+                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+              <p className="text-sm">partharora</p>
+            </div>
+
+            <div>
+              <h3 className="font-medium mb-1">
+                Understanding how to use axios is React Lorem ipsum dolor sit
+                amet consectetur adipisicing elit.
+              </h3>
+            </div>
+
+            <div className="flex gap-2 text-sm mt-3 text-gray-500">
+              <p>Dec 24, 2023</p>
+              <p>5 min read</p>
+              <p></p>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
 
 const NotebookContainer = () => {
+  const [data, setData] = useState<any>()
+
+  useEffect(() => {
+    async function getData() {
+      try {
+        const response = await axios.get(`http://localhost:5000/notebook`)
+        setData(response.data)
+      } catch (error) {
+        console.error("Error fetching data:", error)
+      }
+    }
+
+    getData()
+  }, [])
+
   return (
     <div className="flex flex-col gap-8">
-      {Array.from({ length: 8 }).map((_, i) => (
-        <Notebook key={i} index={i} />
-      ))}
-    </div>
-  )
-}
+      {/* {JSON.stringify(data)} */}
 
-const Notebook = ({ index }: { index: number }) => {
-  return (
-    <div className="border-b-2 pb-8 border-gray-100 px-2 py-3 rounded-sm">
-      <div className="flex gap-3 items-center mb-2">
-        <Avatar className="w-6 h-6">
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
-        <p>username</p>
-      </div>
+      {data &&
+        data.map((notebook: any, index: number) => (
+          <Notebook
+            key={index}
+            index={index}
+            title={notebook.title}
+            id={notebook.id}
+          />
+        ))}
 
-      <Link key={index} href={`/notebook/${index}`}>
-        <div>
-          <h1 className="text-xl mb-1 font-semibold">
-            Understanding useEffect and useState in React
-          </h1>
-          <p className="text-gray-500 mb-2">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente,
-            amet.
-          </p>
-        </div>
-      </Link>
-
-      <div>
-        <div className="flex gap-2">
-          <div className="bg-gray-200 px-2 py-1 rounded-sm">JavaScript</div>
-          <div className="bg-gray-200 px-2 py-1 rounded-sm">
-            Web development
-          </div>
-        </div>
-      </div>
-
-      <div className="flex justify-between items-center mt-7">
-        <div className="flex gap-6">
-          <p className="">date</p>
-          <p>claps</p>
-          <p>likes</p>
-        </div>
-
-        <div className="flex gap-6">
-          <p>bookmark</p>
-          <p>duplicate</p>
-        </div>
-      </div>
+      {/* {Array.from({ length: 10 }).map((_, index) => (
+        <Notebook
+          key={index}
+          index={index}
+          title="Lorem ipsum dolor sit amet."
+        />
+      ))} */}
     </div>
   )
 }

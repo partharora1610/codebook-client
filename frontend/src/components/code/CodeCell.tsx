@@ -7,12 +7,31 @@ import {
 } from "@/components/ui/resizable"
 import CodeEditor from "./CodeEditor"
 import PreviewWindow from "./PreviewWindow"
+import { useEffect } from "react"
 
 interface CodeCellProp {
   cell: any
 }
 
 const CodeCell: React.FC<CodeCellProp> = ({ cell }) => {
+  const createBundle = (cellId: string, input: string) => {
+    console.log("createBundle", cellId, input)
+  }
+
+  const combinedCode = [""]
+
+  useEffect(() => {
+    createBundle(cell.id, combinedCode.join("\n"))
+
+    const timer = setTimeout(async () => {
+      createBundle(cell.id, combinedCode.join("\n"))
+    }, 750)
+
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [combinedCode.join("\n"), cell.id])
+
   const html = `
   <!DOCTYPE html>
   <html lang="en">

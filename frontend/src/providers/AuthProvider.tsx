@@ -43,11 +43,11 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     }
 
-    if (!user) {
-      fetchUser()
-    } else {
-      router.push("/")
-    }
+    // if (!user) {
+    //   fetchUser()
+    // } else {
+    //   router.push("/")
+    // }
   }, [router, setUser, clearUser, user])
 
   return <div>{children}</div>
