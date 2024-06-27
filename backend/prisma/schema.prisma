@@ -15,11 +15,12 @@ model User {
 
   bookmarks  Resource[] @relation("BookmarkRelation")
   resources  Resource[]
+
   comments    Comment[]
   thumbsUp    ThumbsUp[]
+
   following  Follows[]  @relation("FollowingRelation")
   followers  Follows[]  @relation("FollowerRelation")
-
 
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
@@ -47,7 +48,7 @@ model Comment {
   id         String   @id @default(cuid())
   content    String
   userId     String
-  resourceId String
+  resourceId String   
   user       User     @relation(fields: [userId], references: [id])
   resource   Resource @relation(fields: [resourceId], references: [id])
 
@@ -57,25 +58,35 @@ model Comment {
 
 model ThumbsUp {
   id         String   @id @default(cuid())
+  count      Int       @default(0)
+
   userId     String
-  resourceId String
   user       User     @relation(fields: [userId], references: [id])
+
+  resourceId String
   resource   Resource @relation(fields: [resourceId], references: [id])
 
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now())
+
+  @@unique([userId, resourceId])
+
 }
 
 
 model Follows {
   id         String   @id @default(cuid())
+
   followerId String
-  followingId String
   follower   User     @relation("FollowerRelation", fields: [followerId], references: [id])
+
+  followingId String
   following  User     @relation("FollowingRelation", fields: [followingId], references: [id])
 
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now())
+
+  @@unique([followerId, followingId])
 }
 
 enum AccessType {

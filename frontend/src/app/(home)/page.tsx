@@ -114,13 +114,14 @@ const NotebookContainer = () => {
           />
         ))}
 
-      {/* {Array.from({ length: 10 }).map((_, index) => (
+      {Array.from({ length: 10 }).map((_, index) => (
         <Notebook
           key={index}
           index={index}
           title="Lorem ipsum dolor sit amet."
+          id="234567"
         />
-      ))} */}
+      ))}
     </div>
   )
 }

@@ -5,6 +5,8 @@ const bodyParser = require("body-parser")
 import cors from "cors"
 import authRouter from "./router/auth"
 import notebookRouter from "./router/notebook"
+import interactionRouter from "./router/interactions"
+import userRouter from "./router/user"
 
 const app = express()
 const port = 5000
@@ -20,6 +22,8 @@ app.get("/health", (req: Request, res: Response) => {
 
 app.use("/auth", authRouter)
 app.use("/notebook", notebookRouter)
+app.use("/interactions", interactionRouter)
+app.use("/user", userRouter)
 
 // Starting server
 app.listen(port, () => {

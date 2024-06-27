@@ -1,10 +1,9 @@
 "use client"
-
 import CellContainer from "@/components/code/CellContainer"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import useNotebookStore from "@/store/notebook-store"
-import { HandMetal, MessageCircle, BookCopy, Bookmark, Dot } from "lucide-react"
+import { HandMetal, MessageCircle, Bookmark, Dot, Copy } from "lucide-react"
 import { useParams } from "next/navigation"
 import React, { useEffect } from "react"
 
@@ -51,7 +50,6 @@ const HeaderComponent = () => {
             </div>
             <div className="flex items-center">
               <div className="flex gap-1 items-center">
-                {/* <Star className="text-yellow-600" width={18} height={18} /> */}
                 <p className="text-gray-500">8 mins</p>
               </div>
 
@@ -77,6 +75,8 @@ const HeaderComponent = () => {
 }
 
 const ActionBarComponent = () => {
+  const params = useParams()
+  const id = params.id as string
   return (
     <div className="border-y-2 border-gray-100 py-3 mt-10">
       <div className="flex justify-between items-center">
@@ -90,15 +90,16 @@ const ActionBarComponent = () => {
             <MessageCircle />
             <p className="text-sm">250</p>
           </div>
-        </div>
-
-        <div className="flex gap-6">
-          <div className="cursor-pointer flex gap-2 text-gray-400 items-center">
-            <BookCopy />
-          </div>
 
           <div className="cursor-pointer flex gap-2 text-gray-400 items-center">
             <Bookmark />
+          </div>
+        </div>
+
+        <div className="flex gap-6 items-center">
+          <div className="cursor-pointer flex gap-2 text-gray-400 items-center">
+            <div className="mr-2">npx devsheet clone {id}</div>
+            <Copy />
           </div>
         </div>
       </div>
