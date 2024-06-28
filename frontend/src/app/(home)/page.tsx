@@ -5,6 +5,7 @@ import axios from "axios"
 import Notebook from "@/components/shared/cards/Notebook"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
+import storageManager from "@/lib/local-storage"
 
 export default function Home() {
   return (
@@ -48,10 +49,38 @@ const WhoFollowComponent = () => {
 }
 
 const RecentlySavedComponent = () => {
+  // Move the logic to a separate component
+  const [bookmarks, setBookmarks] = useState<any[]>([])
+
+  useEffect(() => {
+    const fetchBookMarks = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/user/bookmarks`,
+          {
+            headers: {
+              Authorization: `Bearer ${storageManager.getItem("token")}`,
+            },
+          }
+        )
+        console.log({ response })
+
+        console.log(response.data)
+        setBookmarks(response.data)
+      } catch (error) {
+        console.error("Error fetching bookmarks:", error)
+      }
+    }
+
+    fetchBookMarks()
+  }, [])
+
   return (
     <div className="">
       <h3 className="text-lg font-semibold mb-4">Recently Saved Sheets</h3>
       <div className="flex flex-col gap-6">
+        {JSON.stringify(bookmarks)}
+
         {Array.from({ length: 4 }).map((_, index) => (
           <div
             key={index}

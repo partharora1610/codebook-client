@@ -38,18 +38,21 @@ const GlobalSearch = () => {
 
     return () => clearTimeout(delayDebounceFn)
   }, [search, pathname, searchParams, query])
-  return (
-    <Input
-      placeholder="Search"
-      className="bg-gray-100 w-[300px] rounded-full px-6 border-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
-      onChange={(e) => {
-        setSearch(e.target.value)
 
-        if (!isOpen) setIsOpen(true)
-        if (e.target.value === "" && isOpen) setIsOpen(false)
-      }}
-      value={search}
-    />
+  return (
+    <>
+      <Input
+        placeholder="Search"
+        className="bg-gray-100 w-full rounded-full px-6 border-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
+        onChange={(e) => {
+          setSearch(e.target.value)
+
+          if (!isOpen) setIsOpen(true)
+          if (e.target.value === "" && isOpen) setIsOpen(false)
+        }}
+        value={search}
+      />
+    </>
   )
 }
 

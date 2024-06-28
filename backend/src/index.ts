@@ -11,8 +11,13 @@ import userRouter from "./router/user"
 const app = express()
 const port = 5000
 
+const corsOptions = {
+  origin: "*",
+  credentials: true,
+}
+
 app.use(bodyParser.json())
-app.use(cors())
+app.use(cors(corsOptions))
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.get("/health", (req: Request, res: Response) => {

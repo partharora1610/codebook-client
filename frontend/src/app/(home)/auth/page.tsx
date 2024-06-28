@@ -14,8 +14,8 @@ import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { useSearchParams } from "next/navigation"
-import axios from "axios"
-import storageManager from "@/lib/local-storage"
+
+import useAuthStore from "@/store/auth-store"
 
 const Page = () => {
   const searchParams = useSearchParams()
@@ -29,19 +29,10 @@ const Page = () => {
 const LoginComponent = () => {
   const [password, setPassword] = useState("")
   const [username, setUsername] = useState("")
+  const { login } = useAuthStore()
 
   const onSubmit = async () => {
-    const response = await axios.post(
-      process.env.NEXT_PUBLIC_BACKEND_BASE_URL + "/auth/login",
-      {
-        username,
-        password,
-      }
-    )
-
-    if (response.status === 200) {
-      storageManager.setItem("token", response.data.token)
-    }
+    await login(username, password)
   }
 
   return (
@@ -102,21 +93,10 @@ const SignupComponent = () => {
   const [password, setPassword] = useState("")
   const [username, setUsername] = useState<string>("")
   const [confirmPassword, setConfirmPassword] = useState("")
+  const { register } = useAuthStore()
 
   const onSubmit = async () => {
-    const response = await axios.post(
-      process.env.NEXT_PUBLIC_BACKEND_BASE_URL + "/auth/register",
-      {
-        username,
-        password,
-        confirmPassword,
-        email,
-      }
-    )
-
-    if (response.status === 201) {
-      storageManager.setItem("token", response.data.token)
-    }
+    await register(email, password, confirmPassword, username)
   }
 
   return (

@@ -24,15 +24,15 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <ReactQueryClientProvider>
-      <html lang="en">
-        <body className={poppins.className}>
+    <html lang="en">
+      <body className={poppins.className}>
+        <ReactQueryClientProvider>
           <AuthProvider>
             <Navbar />
             {children}
           </AuthProvider>
-        </body>
-      </html>
-    </ReactQueryClientProvider>
+        </ReactQueryClientProvider>
+      </body>
+    </html>
   )
 }

@@ -1,8 +1,3 @@
-// interface NotebookCell {
-//   type: "md" | "js"
-//   content: string
-// }
-
 const notebookContent: any[] = [
   {
     type: "md",

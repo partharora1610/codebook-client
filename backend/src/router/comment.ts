@@ -3,7 +3,6 @@ import prisma from "../db"
 
 const router = Router()
 
-// creating a comment on the resource -> Notebook
 router.post("/:id", async (req: Request, res: Response) => {
   const resourceId = req.params.id
   const userId = req.userId
@@ -35,7 +34,6 @@ router.post("/:id", async (req: Request, res: Response) => {
       data: comment,
     })
   } catch (error) {
-    console.error(error)
     res
       .status(500)
       .json({ message: "An error occurred while processing your request." })

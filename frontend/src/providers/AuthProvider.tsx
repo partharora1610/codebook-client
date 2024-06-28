@@ -1,54 +1,62 @@
 "use client"
 
-import storageManager from "@/lib/local-storage"
-import useUserStore from "@/store/user-store"
+import authStore from "../store/auth-store"
 import axios from "axios"
-import React, { useEffect } from "react"
 import { useRouter } from "next/navigation"
+import React, { useEffect } from "react"
+import { usePathname } from "next/navigation"
+import storageManager from "@/lib/local-storage"
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const { setUser, clearUser, user } = useUserStore()
+  const { isAuthenticated, setAuthenticated, setUser, loading, setLoading } =
+    authStore()
   const router = useRouter()
+  const pathname = usePathname()
+
+  const fetchUser = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/auth/me", {
+        headers: {
+          Authorization: `Bearer ${storageManager.getItem("token")}`,
+        },
+      })
+
+      if (response.status === 200) {
+        setAuthenticated(true)
+        setUser(response.data.user)
+        setLoading(false)
+      } else {
+        setAuthenticated(false)
+        router.push(
+          `/auth?callbackUrl=${encodeURIComponent(
+            pathname + window.location.search
+          )}`
+        )
+      }
+    } catch (error) {
+      setAuthenticated(false)
+
+      router.push(
+        `/auth?callbackUrl=${encodeURIComponent(
+          pathname + window.location.search
+        )}`
+      )
+    }
+  }
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const token = storageManager.getItem("token")
+    fetchUser()
+  }, [])
 
-      if (!token) {
-        clearUser()
-        router.push("/auth?mode=login")
-        return
-      }
-
-      try {
-        const response = await axios.get(
-          process.env.NEXT_PUBLIC_BACKEND_BASE_URL! + "/auth/me",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        )
-
-        if (response.status === 200) {
-          setUser(response.data.user)
-          router.push("/")
-        } else {
-          clearUser()
-          router.push("/auth?mode=login")
-        }
-      } catch (error) {
-        clearUser()
-        router.push("/auth?mode=login")
-      }
+  useEffect(() => {
+    if (!isAuthenticated) {
+      fetchUser()
     }
+  }, [isAuthenticated, router, setAuthenticated, setUser])
 
-    // if (!user) {
-    //   fetchUser()
-    // } else {
-    //   router.push("/")
-    // }
-  }, [router, setUser, clearUser, user])
+  if (loading) {
+    return <>Loadings.....</>
+  }
 
   return <div>{children}</div>
 }

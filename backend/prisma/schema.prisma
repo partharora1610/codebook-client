@@ -37,7 +37,6 @@ model Resource {
   comments    Comment[]
   thumbsUp    ThumbsUp[]
 
-
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 }
@@ -84,7 +83,7 @@ model Follows {
   following  User     @relation("FollowingRelation", fields: [followingId], references: [id])
 
   createdAt  DateTime @default(now())
-  updatedAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())  
 
   @@unique([followerId, followingId])
 }

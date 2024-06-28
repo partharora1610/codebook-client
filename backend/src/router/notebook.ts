@@ -29,8 +29,11 @@ router.get("/:id", async (req: Request, res: Response) => {
 // GET /notebook
 router.get("/", async (req: Request, res: Response) => {
   try {
-    console.log("Notebooks")
-    const notebooks = await prisma.resource.findMany()
+    const notebooks = await prisma.resource.findMany({
+      where: {
+        accessType: "PUBLIC",
+      },
+    })
 
     res.status(200).send(notebooks)
   } catch (error) {
@@ -87,12 +90,5 @@ router.post(
     }
   }
 )
-
-router.post("/:id/duplicate", (req: Request, res: Response) => {
-  try {
-  } catch (error) {
-    res.status(500).send("Error processing the request")
-  }
-})
 
 export default router
