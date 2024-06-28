@@ -39,16 +39,8 @@ router.post("/:id", async (req: Request, res: Response) => {
       },
       create: {
         count,
-        user: {
-          connect: {
-            id: userId,
-          },
-        },
-        resource: {
-          connect: {
-            id: resourceId,
-          },
-        },
+        userId,
+        resourceId,
       },
     })
 

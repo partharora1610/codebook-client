@@ -1,9 +1,10 @@
 "use client"
 import CellContainer from "@/components/code/CellContainer"
+import ThumbsUpComponent from "@/components/shared/ThumbsUpComponent"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import useNotebookStore from "@/store/notebook-store"
-import { HandMetal, MessageCircle, Bookmark, Dot, Copy } from "lucide-react"
+import { MessageCircle, Bookmark, Dot, Copy } from "lucide-react"
 import { useParams } from "next/navigation"
 import React, { useEffect } from "react"
 
@@ -34,7 +35,6 @@ const HeaderComponent = () => {
       <div className="mb-6">
         <h1 className="text-3xl mb-1 font-semibold">{notebook?.title}</h1>
       </div>
-
       <div>
         <div className="flex gap-3 items-center mb-2">
           <Avatar>
@@ -43,7 +43,7 @@ const HeaderComponent = () => {
           </Avatar>
           <div>
             <div className="flex gap-2 items-center">
-              <p>username</p>
+              <p>{notebook?.user?.username}</p>
               <Button variant="link" size="sm" className="text-primary-700">
                 Follow
               </Button>
@@ -77,12 +77,13 @@ const HeaderComponent = () => {
 const ActionBarComponent = () => {
   const params = useParams()
   const id = params.id as string
+
   return (
     <div className="border-y-2 border-gray-100 py-3 mt-10">
       <div className="flex justify-between items-center">
         <div className="flex gap-6">
           <div className="cursor-pointer flex gap-2 text-gray-400 items-center">
-            <HandMetal />
+            <ThumbsUpComponent postId={id} />
             <p className="text-sm">7.6K</p>
           </div>
 

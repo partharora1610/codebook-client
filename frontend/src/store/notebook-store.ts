@@ -5,6 +5,10 @@ interface Notebook {
   title: string
   content: string
   createdAt: string
+  estimatedTime: number
+  user: {
+    username: string
+  }
 }
 
 interface NotebookState {

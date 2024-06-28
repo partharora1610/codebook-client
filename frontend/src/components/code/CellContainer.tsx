@@ -61,13 +61,13 @@ const CellContainer = () => {
   return (
     <div>
       <div className="flex flex-col gap-14">
-        {/* {notebook &&
+        {notebook &&
           JSON.parse(notebook.content).map((cell: any) => {
             return <CellItem key={cell.id} cell={cell} />
-          })} */}
-        {data.map((cell: any) => {
+          })}
+        {/* {data.map((cell: any) => {
           return <CellItem key={cell.id} cell={cell} />
-        })}
+        })} */}
       </div>
     </div>
   )

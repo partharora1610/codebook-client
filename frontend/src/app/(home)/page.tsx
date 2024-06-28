@@ -131,24 +131,29 @@ const NotebookContainer = () => {
 
   return (
     <div className="flex flex-col gap-8">
-      {/* {JSON.stringify(data)} */}
+      {/* {JSON.stringify(data[0])} */}
 
       {data &&
         data.map((notebook: any, index: number) => (
           <Notebook
             key={index}
             index={index}
+            username={notebook.user.username}
             title={notebook.title}
             id={notebook.id}
+            createdAt={notebook.createdAt}
+            estimatedTime={notebook.estimatedTime}
           />
         ))}
-
       {Array.from({ length: 10 }).map((_, index) => (
         <Notebook
+          estimatedTime={5}
+          username="random_username"
           key={index}
           index={index}
           title="Lorem ipsum dolor sit amet."
           id="234567"
+          createdAt="2023-12-24T00:00:00.000Z"
         />
       ))}
     </div>

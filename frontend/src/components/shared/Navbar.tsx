@@ -3,7 +3,6 @@
 import React from "react"
 import { MoonIcon } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import GlobalSearch from "./GlobalSearch"
 import {
   DropdownMenu,
   DropdownMenuContent,

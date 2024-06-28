@@ -3,16 +3,23 @@ import fs from "fs"
 import prisma from "../db"
 import upload from "../utils/multer"
 import { Authenticated } from "../middleware/authenticated"
+import { estimateReadingTime } from "../utils/estimated-time"
 const router = express.Router()
 
 router.get("/:id", async (req: Request, res: Response) => {
-  console.log("Notebook")
   try {
     const { id } = req.params
 
     const notebook = await prisma.resource.findUnique({
       where: {
         id: id,
+      },
+      include: {
+        user: {
+          select: {
+            username: true,
+          },
+        },
       },
     })
 
@@ -32,6 +39,13 @@ router.get("/", async (req: Request, res: Response) => {
     const notebooks = await prisma.resource.findMany({
       where: {
         accessType: "PUBLIC",
+      },
+      include: {
+        user: {
+          select: {
+            username: true,
+          },
+        },
       },
     })
 
@@ -64,10 +78,13 @@ router.post(
         throw new Error("Invalid file type")
       }
 
+      const estimatedTime = Math.ceil(estimateReadingTime(JSON.parse(fileData)))
+
       const notebook = await prisma.resource.create({
         data: {
           title,
           content: fileData,
+          estimatedTime,
           accessType: "PUBLIC",
           user: {
             connect: {
@@ -86,6 +103,7 @@ router.post(
 
       res.status(201).send("Notebook created")
     } catch (error) {
+      console.error(error)
       res.status(500).send("Error processing the request")
     }
   }

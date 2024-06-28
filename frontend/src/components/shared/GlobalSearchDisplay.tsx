@@ -12,6 +12,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Book } from "lucide-react"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 
 // this will call the API
 const globalSearch = async ({ query, type }: any) => {}
@@ -39,9 +40,11 @@ const GlobalSearchDisplay = () => {
       }
     }
 
+    // fetching the data
     // if (global) {
     //   fetchData()
     // }
+
     if (global) {
       console.log("fetching data")
     }
@@ -62,20 +65,27 @@ const GlobalSearchDisplay = () => {
               </div>
 
               <ScrollArea className="h-[560px]">
-                {/* Show this in case there are no results */}
-                {/* <div className="mt-32">
-                  <div className="text-center">No Results</div>
-                </div> */}
-
                 <div className="flex flex-col gap-2">
-                  {Array.from({ length: 8 }).map((_, index) => (
-                    <GlobalSearchCard
+                  <GlobalSearchCardUser
+                    username="partharora1610"
+                    index="1"
+                    id="123456"
+                    name="Parth Arora"
+                  />
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <GlobalSearchCardPost
                       key={index}
                       index={index}
                       title="Lorem ipsum dolor sit amet."
                       id="234567"
                     />
                   ))}
+                  <GlobalSearchCardUser
+                    username="partharora1610"
+                    index="1"
+                    id="123456"
+                    name="Parth Arora"
+                  />
                 </div>
               </ScrollArea>
             </DialogDescription>
@@ -86,7 +96,7 @@ const GlobalSearchDisplay = () => {
   )
 }
 
-const GlobalSearchCard = ({
+const GlobalSearchCardPost = ({
   index,
   title,
   id,
@@ -105,12 +115,66 @@ const GlobalSearchCard = ({
         <div>
           <Book size={28} />
         </div>
+        <div className="flex justify-between w-full items-center">
+          <div>
+            <h1 className="text-lg mb-1 font-medium text-gray-950">{title}</h1>
+            <p className="text-gray-500 mb-2">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente,
+              amet.
+            </p>
+          </div>
+
+          <div>
+            <div className="bg-green-100 text-green-700 font-semibold px-3 py-1 rounded-md text-sm">
+              notebook
+            </div>
+          </div>
+        </div>
+      </Link>
+    </div>
+  )
+}
+
+const GlobalSearchCardUser = ({
+  username,
+  index,
+  id,
+  name,
+}: {
+  id: string
+  username: string
+  index: string
+  name: string
+}) => {
+  return (
+    <div className="border-b-2  border-gray-100 px-2 py-3 rounded-sm">
+      <Link
+        key={index}
+        href={`/profile/123`}
+        className="flex gap-4 items-center"
+      >
         <div>
-          <h1 className="text-lg mb-1 font-medium text-gray-950">{title}</h1>
-          <p className="text-gray-500 mb-2">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente,
-            amet.
-          </p>
+          <Avatar className="w-9 h-9">
+            <AvatarFallback className="font-semibold bg-gray-300">
+              {username[0].toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
+        </div>
+        <div className="flex justify-between w-full items-center">
+          <div>
+            <h1 className="text-lg mb-1 font-medium text-gray-950">
+              {username}
+            </h1>
+            <p className="text-gray-500 mb-2">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente,
+              amet.
+            </p>
+          </div>
+          <div>
+            <div className="bg-blue-100 text-blue-700 font-semibold px-3 py-1 rounded-md text-sm">
+              user
+            </div>
+          </div>
         </div>
       </Link>
     </div>

@@ -1,25 +1,33 @@
 "use client"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { formatDateToMonthYear } from "@/lib/utils"
+import { Bookmark } from "lucide-react"
 import Link from "next/link"
 
 const Notebook = ({
   index,
   title,
   id,
+  createdAt,
+  username,
+  estimatedTime,
 }: {
   index: number
   title: string
   id: string
+  estimatedTime: number
+  username: string
+  createdAt: string
 }) => {
   return (
     <div className="border-b-2 pb-12 border-gray-100 px-2 py-3 rounded-sm">
-      <div className="flex gap-3 items-center mb-2">
+      <div className="flex gap-2 items-center mb-2">
         <Avatar className="w-6 h-6">
           <AvatarImage src="https://github.com/shadcn.png" />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
-        <p className="text-sm">partharora1610</p>
+        <p className="text-sm">{username}</p>
       </div>
 
       <Link key={index} href={`/notebook/${id}`}>
@@ -32,25 +40,17 @@ const Notebook = ({
         </div>
       </Link>
 
-      {/* <div>
-        <div className="flex gap-2">
-          <div className="bg-gray-200 px-2 py-1 rounded-sm">JavaScript</div>
-          <div className="bg-gray-200 px-2 py-1 rounded-sm">
-            Web development
-          </div>
-        </div>
-      </div> */}
-
-      <div className="flex justify-between items-center mt-8">
-        <div className="flex gap-6">
-          <p className="">date</p>
-          <p>claps</p>
-          <p>likes</p>
+      <div className="flex justify-between items-center mt-6">
+        <div className="flex gap-3 items-center">
+          <p className="font-medium text-sm uppercase text-gray-600">
+            {formatDateToMonthYear(createdAt)}
+          </p>
+          <div className="h-1 w-1 bg-gray-400 rounded-full"></div>
+          <div className="text-sm">{estimatedTime} min read</div>
         </div>
 
-        <div className="flex gap-6">
-          <p>bookmark</p>
-          <p>duplicate</p>
+        <div>
+          <Bookmark size={22} />
         </div>
       </div>
     </div>

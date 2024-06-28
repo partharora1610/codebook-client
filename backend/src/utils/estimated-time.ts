@@ -1,15 +1,3 @@
-const notebookContent: any[] = [
-  {
-    type: "md",
-    content: "This is a sample markdown cell. It has some text to read.",
-  },
-  {
-    type: "js",
-    content:
-      "console.log('Hello, world!');\nfunction add(a, b) {\n  return a + b;\n}",
-  },
-]
-
 const wordsPerMinuteMd = 250
 const linesPerMinuteJs = 1.5
 
@@ -21,14 +9,14 @@ function countLinesOfCode(text: string): number {
   return text.split("\n").length
 }
 
-function estimateReadingTime(notebook: any[]): number {
+export function estimateReadingTime(notebook: any[]): number {
   let totalMdWords = 0
   let totalJsLines = 0
 
   notebook.forEach((cell) => {
-    if (cell.type === "md") {
+    if (cell.type === "text") {
       totalMdWords += countWords(cell.content)
-    } else if (cell.type === "js") {
+    } else if (cell.type === "code") {
       totalJsLines += countLinesOfCode(cell.content)
     }
   })
@@ -38,5 +26,3 @@ function estimateReadingTime(notebook: any[]): number {
 
   return timeMdMinutes + timeJsMinutes
 }
-
-const estimatedTime = estimateReadingTime(notebookContent)

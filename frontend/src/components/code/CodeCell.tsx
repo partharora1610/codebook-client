@@ -64,21 +64,25 @@ const CodeCell: React.FC<CodeCellProp> = ({ cell }) => {
 `
 
   return (
-    <div className="w-full h-[30vh] border-4 border-gray-500">
-      <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel className="text-black">
-          <div className="w-full h-full">
-            <CodeEditor initValue={""} onChange={() => {}} />
-          </div>
-        </ResizablePanel>
-        <ResizableHandle withHandle />
-        <ResizablePanel className="text-black">
-          <div className="w-full h-full">
-            <PreviewWindow code={""} html={html} error={""} />
-          </div>
-        </ResizablePanel>
-      </ResizablePanelGroup>
-    </div>
+    <>
+      {/* TESTING */}
+      {JSON.stringify(cell)}
+      <div className="w-full h-[30vh] border-4 border-gray-500">
+        <ResizablePanelGroup direction="horizontal">
+          <ResizablePanel className="text-black">
+            <div className="w-full h-full">
+              <CodeEditor initValue={cell.content} onChange={() => {}} />
+            </div>
+          </ResizablePanel>
+          <ResizableHandle withHandle />
+          <ResizablePanel className="text-black">
+            <div className="w-full h-full">
+              <PreviewWindow code={""} html={html} error={""} />
+            </div>
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </div>
+    </>
   )
 }
 

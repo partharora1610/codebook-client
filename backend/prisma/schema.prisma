@@ -30,6 +30,7 @@ model Resource {
   id          String       @id @default(cuid())
   title       String
   content     Json
+  estimatedTime Int        @default(4)
   accessType  AccessType   @default(PUBLIC)
   userId      String
   user        User         @relation(fields: [userId], references: [id])
